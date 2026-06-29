@@ -1,0 +1,63 @@
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: sansaweigh-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: sansaweigh
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - sansaweigh-net
+
+  redis:
+    image: redis:7.4-alpine
+    container_name: sansaweigh-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - sansaweigh-net
+
+  # API externa de balanzas (mock para desarrollo local).
+  # Este servicio NO es parte del entregable; sólo existe para que la
+  # integración ExternalScaleClient tenga un endpoint donde pegar.
+  # Si quieres apagarlo, comenta este bloque y la app caera al fallback
+  # de Redis y luego al default "-1" sembrado por ScaleSpecSeeder.
+  mock-scale-api:
+    image: kennethreitz/httpbin
+    container_name: sansaweigh-mock-api
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    networks:
+      - sansaweigh-net
+
+volumes:
+  mongodb_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  sansaweigh-net:
+    driver: bridge
