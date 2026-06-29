@@ -3,3 +3,4 @@
 - [Reglas de Negocio](reglas-negocio.md)
 - [Manual de Usuario](manual-usuario.md)
 - [API REST (Swagger)](swagger.md)
+- [Issues Conocidos](KNOWN_ISSUES.md)
