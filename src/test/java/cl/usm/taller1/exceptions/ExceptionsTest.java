@@ -21,9 +21,7 @@ class ExceptionsTest {
                 new IllegalWeighingStateException("INGRESADO", "DESPACHADO");
 
         assertThat(ex.getMessage())
-                .contains("INGRESADO")
-                .contains("DESPACHADO")
-                .contains("no permitida");
+                .isEqualTo("Transición de estado no permitida: INGRESADO → DESPACHADO");
     }
 
     @Test
@@ -52,9 +50,7 @@ class ExceptionsTest {
         BalanzaPrimaRestrictionException ex = new BalanzaPrimaRestrictionException(7, 15);
 
         assertThat(ex.getMessage())
-                .contains("7")
-                .contains("15")
-                .contains("primo");
+                .isEqualTo("La balanza con ID primo 7 no puede registrar paquetes PESADO en días impares (día 15)");
     }
 
     @Test
@@ -74,9 +70,7 @@ class ExceptionsTest {
                 new RestriccionHorarioNocturnoException(LocalTime.of(23, 30));
 
         assertThat(ex.getMessage())
-                .contains("23:30")
-                .contains("nocturno")
-                .contains("PESADO");
+                .isEqualTo("No se pueden procesar paquetes PESADO en horario nocturno (20:00-06:00). Hora actual: 23:30");
     }
 
     @Test
@@ -96,7 +90,7 @@ class ExceptionsTest {
         ExternalServiceUnavailableException ex =
                 new ExternalServiceUnavailableException("scale-api");
 
-        assertThat(ex.getMessage()).contains("scale-api");
+        assertThat(ex.getMessage()).isEqualTo("Servicio externo no disponible: scale-api");
     }
 
     @Test
@@ -106,7 +100,7 @@ class ExceptionsTest {
         ExternalServiceUnavailableException ex =
                 new ExternalServiceUnavailableException("scale-api", causa);
 
-        assertThat(ex.getMessage()).contains("scale-api");
+        assertThat(ex.getMessage()).isEqualTo("Servicio externo no disponible: scale-api");
         assertThat(ex.getCause()).isEqualTo(causa);
     }
 
