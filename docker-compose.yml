@@ -10,7 +10,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin123
     volumes:
-      - mongodb_data:/data/db
+      - sansaweigh_mongo_data:/data/db
     healthcheck:
       test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
       interval: 10s
@@ -53,7 +53,7 @@ services:
       - sansaweigh-net
 
 volumes:
-  mongodb_data:
+  sansaweigh_mongo_data:
     driver: local
   redis_data:
     driver: local
