@@ -1,0 +1,145 @@
+openapi: 3.0.1
+info:
+  title: SansaWeigh API
+  description: "API de Gestión de Pesaje - Microservicio SansaWeigh. Convierte pesos\
+    \ entre Sansas y kilogramos, clasifica paquetes, y gestiona el ciclo de vida del\
+    \ pesaje."
+  version: 1.0.0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+tags:
+- name: Pesajes
+  description: API para la gestión de ciclo de vida de pesajes
+paths:
+  /api/pesajes:
+    get:
+      tags:
+      - Pesajes
+      summary: "Obtener registros de pesaje, opcionalmente filtrados por rango de\
+        \ fechas"
+      operationId: obtenerPorFiltros
+      parameters:
+      - name: fechaDesde
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: fechaHasta
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PesajeResponseDTO"
+    post:
+      tags:
+      - Pesajes
+      summary: Crear un nuevo registro de pesaje
+      operationId: crearRegistro
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PesajeRequestDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PesajeResponseDTO"
+  /api/pesajes/{id}:
+    patch:
+      tags:
+      - Pesajes
+      summary: Actualizar el estado de un pesaje
+      operationId: actualizarEstado
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ActualizarEstadoRequestDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PesajeResponseDTO"
+components:
+  schemas:
+    PesajeRequestDTO:
+      required:
+      - idBalanza
+      - idPaquete
+      - pesoEnSansas
+      type: object
+      properties:
+        idBalanza:
+          type: string
+        idPaquete:
+          type: string
+        pesoEnSansas:
+          type: number
+    PesajeResponseDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        idBalanza:
+          type: string
+        idPaquete:
+          type: string
+        pesoEnSansas:
+          type: number
+        pesoEnKilogramos:
+          type: number
+        categoriaPeso:
+          type: string
+        estadoActual:
+          type: string
+        historialTransiciones:
+          type: array
+          items:
+            $ref: "#/components/schemas/TransicionEstadoDTO"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    TransicionEstadoDTO:
+      type: object
+      properties:
+        estadoAnterior:
+          type: string
+        estadoNuevo:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    ActualizarEstadoRequestDTO:
+      required:
+      - nuevoEstado
+      type: object
+      properties:
+        nuevoEstado:
+          type: string
