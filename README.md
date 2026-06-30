@@ -2,6 +2,11 @@
 
 ¡Bienvenido al repositorio del microservicio SansaWeigh!
 
+## Equipo de Desarrollo
+- Felipe Bravo
+- Eduardo Jones
+- Vicente Paredes
+
 ## Documentación Oficial
 
 Toda la documentación arquitectónica, reglas de negocio, manuales y Swagger se encuentra hosteada localmente utilizando **Docsify**.
