@@ -92,6 +92,15 @@ class PesajeServiceImplTest {
     }
 
     @Test
+    void crearRegistro_PaqueteDuplicado_LanzaException() {
+        PesajeRequestDTO req = new PesajeRequestDTO("100", "P-DUPLICADO", new BigDecimal("10"));
+        when(repository.existsByIdPaquete("P-DUPLICADO")).thenReturn(true);
+        assertThatThrownBy(() -> service.crearRegistro(req))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("El paquete con ID P-DUPLICADO ya se encuentra ingresado en el sistema.");
+    }
+
+    @Test
     @DisplayName("crearRegistro - MEDIANO: éxito sin disparar restricciones")
     void crear_mediano_exito() {
         stubNow(LocalDate.of(2026, 6, 2), LocalTime.of(12, 0));

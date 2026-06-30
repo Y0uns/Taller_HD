@@ -34,6 +34,10 @@ public class PesajeServiceImpl implements PesajeService {
 
     @Override
     public PesajeResponseDTO crearRegistro(PesajeRequestDTO request) {
+        if (repository.existsByIdPaquete(request.idPaquete())) {
+            throw new IllegalArgumentException("El paquete con ID " + request.idPaquete() + " ya se encuentra ingresado en el sistema.");
+        }
+
         CategoriaPeso categoria = CategoriaPeso.clasificar(request.pesoEnSansas());
         
         validarReglaBalanzaPrima(request.idBalanza(), categoria);

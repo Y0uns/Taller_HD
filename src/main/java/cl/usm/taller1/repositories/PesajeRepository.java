@@ -11,6 +11,8 @@ import java.util.List;
 @Repository
 public interface PesajeRepository extends MongoRepository<RegistroPesaje, String> {
 
+    boolean existsByIdPaquete(String idPaquete);
+
     List<RegistroPesaje> findByCreatedAtBetween(LocalDateTime desde, LocalDateTime hasta);
 
     List<RegistroPesaje> findByEstadoActual(EstadoPesaje estado);
