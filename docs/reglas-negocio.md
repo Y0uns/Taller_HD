@@ -22,8 +22,8 @@ Si el ID de la balanza es un **número primo** (ej. 2, 3, 5, 7) y el día actual
 
 Un pesaje solo puede avanzar a través de estados predefinidos. Transiciones inválidas causan error `HTTP 400`.
 
-- `INGRESADO` $\rightarrow$ `PESADO`
-- `PESADO` $\rightarrow$ `APROBADO` o `RECHAZADO`
-- `APROBADO` $\rightarrow$ `DESPACHADO`
-- `RECHAZADO` $\rightarrow$ `DESPACHADO`
+- `INGRESADO` → `PESADO`
+- `PESADO` → `APROBADO` o `RECHAZADO`
+- `APROBADO` → `DESPACHADO`
+- `RECHAZADO` → `DESPACHADO`
 - `DESPACHADO` (Estado final, sin transición posible)
